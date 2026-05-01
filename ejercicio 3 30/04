@@ -1,0 +1,84 @@
+4)
+
+
+create database liga_futbol;
+use ligafutbol;
+
+create table equipos (
+    IDequipo int auto_increment primary key,     nombre varchar(50) not null,
+    estadio varchar(50),
+    aforo int,
+    fundacion int,
+    ciudad varchar(50)
+);
+
+create table presidentes (
+    dni varchar(12) primary key,
+    nombre varchar(50) not null,
+    apellidos varchar(50) not null,
+    fechanacimiento date,
+    IDequipo int unique, 
+    añoeleccion int,
+    foreign key (IDequipo) references equipos(IDequipo) 
+);
+
+create table jugadores (
+    IDjugador int auto_increment primary key,     nombre varchar(50) not null,
+    fechanacimiento date,
+    posicion varchar(30), 
+    IDequipo int,
+    foreign key (IDequipo) references equipos(IDequipo) 
+);
+
+create table partidos (
+    IDpartido int auto_increment primary key,
+    fecha date not null,
+    golescasa int default 0,
+    golesfuera int default 0
+);
+
+create table goles (
+    IDgol int auto_increment primary key,
+    minuto int not null,
+    descripcion text,
+    IDpartido int,
+    IDjugador int,
+    foreign key (IDpartido) references partidos(IDpartido),
+    foreign key (IDjugador) references jugadores(IDjugador)
+);
+
+insert into equipos (nombre, estadio, aforo, fundacion, ciudad) values 
+('real madrid', 'santiago bernabéu', 81044, 1902, 'madrid'),
+('fc barcelona', 'camp nou', 99354, 1899, 'barcelona'),
+('atlético madrid', 'metropolitano', 68456, 1903, 'madrid'),
+('valencia cf', 'mestalla', 49430, 1919, 'valencia'),
+('sevilla fc', 'ramón sánchez-pizjuán', 43883, 1890, 'sevilla');
+
+insert into presidentes (dni, nombre, apellidos, fechanacimiento, IDequipo, añoeleccion) values 
+('11111111a', 'florentino', 'pérez', '1947-03-08', 1, 2009),
+('22222222b', 'joan', 'laporta', '1962-06-29', 2, 2021),
+('33333333c', 'enrique', 'cerezo', '1948-02-27', 3, 2003),
+('44444444d', 'lay hoon', 'chan', '1964-01-01', 4, 2022),
+('55555555e', 'josé maría', 'del nido carrasco', '1978-01-01', 5, 2023);
+
+insert into jugadores (nombre, fechanacimiento, posicion, IDequipo) values 
+('vinicius jr', '2000-07-12', 'delantero', 1),
+('pedri gonzález', '2002-11-25', 'centrocampista', 2),
+('antoine griezmann', '1991-03-21', 'delantero', 3),
+('josé gayà', '1995-05-25', 'defensa', 4),
+('jesús navas', '1985-11-21', 'defensa', 5);
+
+insert into partidos (fecha, golescasa, golesfuera) values 
+('2026-04-01', 2, 1),
+('2026-04-02', 0, 0),
+('2026-04-03', 3, 3),
+('2026-04-04', 1, 0),
+('2026-04-05', 0, 2);
+
+insert into goles (minuto, descripcion, IDpartido, IDjugador) values 
+(15, 'remate de cabeza', 1, 1),
+(44, 'jugada individual', 1, 2),
+(89, 'tiro libre directo', 3, 3),
+(10, 'penalti', 4, 4),
+(75, 'contraataque rápido', 5, 5);
+
