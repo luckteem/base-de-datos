@@ -1,0 +1,49 @@
+4) 
+
+
+create database concesionario;
+use concesionario;
+
+create table clientes (
+    DNIcliente varchar(10) primary key,
+    nombre varchar(50) not null,
+    apellidos varchar(50) not null,
+    direccion varchar(100),
+    telefono varchar(20)
+);
+
+create table coches (
+    matricula varchar(10) primary key,
+    modelo varchar(50) not null,
+    marca varchar(30) not null,
+    color varchar(20),
+    tipo enum('nuevo', 'usado') not null,
+    unidadesstock int default 0,
+    kilometros int default 0,
+    DNIcliente varchar(10),
+    foreign key (DNIcliente) references clientes(DNI)
+);
+
+create table mecanicos (
+    DNImecanico varchar(10) primary key,
+    nombre varchar(50) not null,
+    apellidos varchar(50) not null,
+    fechacontratacion date not null,
+    salario decimal(10,2) not null
+);
+
+create table reparaciones (
+    IDreparacion int auto_increment primary key,
+    matriculacoche varchar(10),
+    DNImecanico varchar(10),
+    fechareparacion date not null,
+    horastrabajadas int not null,
+    foreign key (matriculacoche) references coches(matricula),
+    foreign key (DNImecanico) references mecanicos(DNI)
+);
+
+insert into clientes values ('10101a', 'juan', 'pérez', 'av. mayo 500', '11445566'), ('20202b', 'maría', 'lópez', 'calle corrientes 120', '11223344'), ('30303c', 'carlos', 'gómez', 'belgrano 450', '11998877'), ('40404d', 'ana', 'sánchez', 'santa fe 2000', '11556677'), ('50505e', 'roberto', 'ruiz', '9 de julio 800', '11667788');
+insert into coches (matricula, modelo, marca, color, tipo, unidadesstock, kilometros, DNIcliente) values ('abc-123', 'corolla', 'toyota', 'blanco', 'nuevo', 5, 0, '10101a'), ('def-456', 'cronos', 'fiat', 'gris', 'nuevo', 3, 0, '20202b'), ('ghi-789', 'civic', 'honda', 'negro', 'usado', 0, 45000, '30303c'), ('jkl-101', 'golf', 'vw', 'azul', 'usado', 0, 80000, '10101a'), ('mno-202', 'etios', 'toyota', 'rojo', 'nuevo', 2, 0, '40404d');
+insert into mecanicos values ('mec-01', 'jorge', 'castro', '2020-01-15', 850000.00), ('mec-02', 'luis', 'martínez', '2021-05-20', 780000.00), ('mec-03', 'elena', 'torres', '2019-11-10', 920000.00), ('mec-04', 'pedro', 'díaz', '2022-03-01', 750000.00), ('mec-05', 'rosa', 'herrera', '2023-08-12', 740000.00);
+insert into reparaciones (matriculacoche, DNImecanico, fechareparacion, horastrabajadas) values ('ghi-789', 'mec-01', '2026-04-10', 3), ('jkl-101', 'mec-01', '2026-04-11', 5), ('ghi-789', 'mec-02', '2026-04-12', 2), ('abc-123', 'mec-03', '2026-04-15', 1), ('mno-202', 'mec-05', '2026-04-20', 4);
+
