@@ -1,0 +1,89 @@
+1)
+
+create database bibliotecacentro;
+use bibliotecacentro;
+
+create table autores (
+    IDautor int auto_increment primary key not null,
+    nombre varchar(100) not null,
+    
+);
+
+create table libros (
+    IDlibro int auto_increment primary key not null,
+    titulo varchar(150) not null,
+    isbn varchar(20) not null,
+    editorial varchar(100),
+    paginas int
+);
+
+create table autorlibro (
+    IDautor INT,
+    IDlibro INT,
+    PRIMARY KEY (IDautor, IDlibro),
+    FOREIGN KEY (IDautor) REFERENCES autores(IDautor),
+    FOREIGN KEY (IDlibro) REFERENCES libros(IDlibro)
+);
+
+create table ejemplares (
+    IDejemplar int auto_increment primary key not null,
+    localizacion varchar(100),
+   IDlibro int,
+    FOREIGN KEY (IDlibro) REFERENCES libros(IDlibro)
+);
+
+create table usuarios (
+    IDusuario int auto_increment primary key not null,
+    nombre varchar(100) NOT NULL,
+    direccion varchar(200),
+    telefono varchar(20)
+);
+
+
+create table prestamos (
+    IDprestamo int auto_increment primary key not null,
+    IDusuario int,
+    IDejemplar int,
+    fechaprestamo date not null,
+    fechadevolucion date,
+    FOREIGN KEY (IDusuario) REFERENCES usuarios(IDusuario),
+    FOREIGN KEY (IDejemplar) REFERENCES ejemplares(IDejemplar)
+);
+
+
+insert into autores (nombre) values 
+('Gabriel García Márquez'), ('Isabel Allende'), ('Jorge Luis Borges'), 
+('Julio Cortázar'), ('Mariana Enriquez');
+
+insert into  libros (titulo, isbn, editorial, paginas) values  
+('Cien años de soledad', '978-0307474728', 'Sudamericana', 471),
+('La casa de los espíritus', '978-0525433477', 'Plaza & Janés', 450),
+('Ficciones', '978-8420633145', 'Sur', 150),
+('Rayuela', '978-8420437439', 'Alfaguara', 600),
+('Nuestra parte de noche', '978-8433998859', 'Anagrama', 680);
+
+
+insert into autorlibro (IDautor, IDlibro) values  (1, 1), (2, 2), (3, 3), (4, 4), (5, 5);
+
+insert into ejemplares (localizacion, IDlibro) values 
+('Estante A1', 1), ('Estante A2', 1), ('Estante B1', 2), 
+('Pasillo Central', 3), ('Sala de Lectura', 4);
+
+insert into  usuarios (nombre, direccion, telefono) values 
+('Carlos Paz', 'Av. Rivadavia 1200', '11445566'),
+('Lucía Soler', 'Calle Falsa 123', '11223344'),
+('Martín Gómez', 'Belgrano 450', '11998877'),
+('Sofía Ruiz', 'San Martín 10', '11556677'),
+('Juan López', '9 de Julio 800', '11667788');
+
+
+insert into  prestamos (IDusuario, IDejemplar, fechaprestamo, fechadevolucion) values 
+(1, 1, '2026-04-01', '2026-04-15'),
+(2, 3, '2026-04-05', '2026-04-12'),
+(3, 4, '2026-04-10', null),
+(4, 2, '2026-04-12', null),
+(5, 5, '2026-04-14', '2026-04-20');
+
+
+
+    
