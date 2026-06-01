@@ -1,0 +1,79 @@
+ create database edificios;
+use edificios;
+
+create table edificios (
+  idedificio int auto_increment primary key,
+  nombre varchar(100),
+  direccion varchar(200)
+);
+
+create table unidades (
+  idunidad int primary key,
+  nropiso int,
+  idedificio int,
+  foreign key (idedificio) references edificios(idedificio)
+);
+
+create table expensas (
+  idexp int primary key,
+  idunidad int,
+  monto decimal(10,2),
+  estado varchar(10),
+  foreign key (idunidad) references unidades(idunidad)
+);
+
+insert into edificios values
+(1, 'torre a', 'av rivadavia 1000'),
+(2, 'torre b', 'corrientes 2000'),
+(3, 'edificio c', 'santa fe 3000'),
+(4, 'complejo d', 'belgrano 4000'),
+(5, 'plaza e', 'cabildo 5000');
+
+insert into unidades values (1, 3, 1), (2, 5, 2), (3, 7, 3), (4, 2, 4),(5, 9, 5),(6, 4, 1),(7, 6, 1),(8, 8, 2),(9, 1, 3),(10, 10, 3);
+
+insert into expensas values
+(1, 1, 350000.00, 'impago'),
+(2, 2, 800000.00, 'pago'),
+(3, 3, 1200000.00, 'impago'),
+(4, 4, 15000.00, 'pago'),
+(5, 5, 250000.00, 'impago'),
+(6, 6, 180000.00, 'impago'),
+(7, 7, 220000.00, 'impago'),
+(8, 8, 300000.00, 'impago'),
+(9, 9, 400000.00, 'impago'),
+(10, 10, 500000.00, 'impago'),
+(11, 1, 20000.00, 'pago'),
+(12, 2, 25000.00, 'pago'),
+(13, 3, 18000.00, 'pago'),
+(14, 4, 22000.00, 'pago'),
+(15, 5, 30000.00, 'pago');
+
+-- e=edificio u=unidades x= expensas
+
+select e.nombre, sum(x.monto) as totalimpago
+from edificios e
+inner join unidades u on e.idedificio = u.idedificio
+inner join expensas x on u.idunidad = x.idunidad
+where x.estado = 'impago'
+group by e.nombre
+having sum(x.monto) > 1000000 
+and count(u.idunidad) > 5;
+
+select e.nombre, avg(x.monto) as promedio
+from edificios e
+inner join unidades u on e.idedificio = u.idedificio
+inner join expensas x on u.idunidad = x.idunidad
+where x.estado = 'pago'
+group by e.nombre
+having avg(x.monto) >= 20000;
+
+select e.nombre, sum(x.monto) as recaudado
+from edificios e
+inner join unidades u on e.idedificio = u.idedificio
+inner join expensas x on u.idunidad = x.idunidad
+where x.estado = 'pago'
+group by e.nombre
+order by recaudado desc
+limit 3;
+
+
