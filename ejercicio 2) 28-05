@@ -1,0 +1,71 @@
+create database gimnasio;
+use gimnasio;
+
+create table socios (
+    idsocio int primary key auto_increment,
+    nombre varchar(100) not null,
+    fecha date not null
+);
+
+create table planes (
+    idplan int primary key auto_increment,
+    tipo varchar(50) not null,
+    costo decimal(10,2) not null
+);
+
+create table pagos (
+    idpago int primary key auto_increment,
+    idsocio int not null,
+    idplan int not null,
+    monto decimal(10,2) not null,
+    fecha date not null,
+    foreign key (idsocio) references socios(idsocio),
+    foreign key (idplan) references planes(idplan)
+);
+
+insert into socios (nombre, fecha) values
+('juan perez', 2024-01-15),
+('ana gomez', 2024-02-20),
+('luis lopez', 2024-03-10),
+('maria rodriguez', 2024-04-05),
+('carlos sanchez', 2024-05-12);
+
+insert into planes (tipo, costo) values
+('basico', 5000),
+('estandar', 10000),
+('premium', 20000),
+('vip', 35000),
+('estudiante', 4000);
+
+insert into pagos (idsocio, idplan, monto, fecha) values
+(1, 3, 20000, 2024-06-01),
+(2, 3, 20000, 2024-06-02),
+(3, 3, 20000, 2024-06-03),
+(4, 3, 20000, 2024-06-04),
+(5, 3, 20000, 2024-06-05);
+
+– s= socio
+p=pagos
+pl= planes
+
+select  s.nombre, count(p.idpago) as cantidadpagos
+from socios s
+join pagos p on s.idsocio = pl.idsocio
+join planes pl on p.idplan = pl.idplan
+group by s.idsocio, s.nombre
+having sum(p.monto) > (select costo from planes where tipo = 'premium');
+
+select  pl.tipo, sum(p.monto) as ingresototal, count(distinct p.idsocio) as totalsocios
+from planes pl
+join pagos p on pl.idplan = p.idplan
+group by pl.idplan, pl.tipo
+having count(distinct p.idsocio) > 50
+   and sum(p.monto) > 100000;
+
+select  s.nombre,pl.tipo, count(p.idpago) as cantidadpagos
+from socios s
+join pagos p on s.idsocio = p.idsocio
+join planes pl on p.idplan = pl.idplan
+group by s.idsocio, s.nombre, pl.idplan, pl.tipo
+having count(p.idpago) > 3;
+
