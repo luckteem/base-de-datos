@@ -1,0 +1,78 @@
+create database comercio;
+use comercio;
+
+create table categorias (
+  idcat int primary key,
+  nombrecat varchar(100)
+);
+
+create table productos (
+  idprod int primary key,
+  nombre varchar(100),
+  precio decimal(10,2),
+  idcat int,
+  foreign key (idcat) references categorias(idcat)
+);
+
+create table detalleventa (
+  iddetalle int primary key,
+  idprod int,
+  cantidad int,
+  preciounit decimal(10,2),
+  foreign key (idprod) references productos(idprod)
+);
+
+insert into categorias values
+(1, 'notebooks'),
+(2, 'celulares'),
+(3, 'auriculares'),
+(4, 'monitores'),
+(5, 'accesorios');
+
+insert into productos values
+(1, 'notebook lenovo', 1200.00, 1),
+(2, 'iphone 13', 1800.00, 2),
+(3, 'auricular sony', 80.00, 3),
+(4, 'monitor samsung', 300.00, 4),
+(5, 'mouse logitech', 25.00, 5);
+
+insert into detalleventa values
+(1, 1, 200, 1200.00),
+(2, 2, 350, 1800.00),
+(3, 3, 600, 80.00),
+(4, 4, 50, 300.00),
+(5, 5, 1000, 25.00);
+
+-- c = categorias  p = productos  d = detalleventa
+
+select c.nombrecat as categoria, p.nombre as producto, sum(d.cantidad) as totalvendido
+from categorias c
+inner join productos p on c.idcat = p.idcat
+inner join detalleventa d on p.idprod = d.idprod
+group by c.nombrecat, p.nombre
+having sum(d.cantidad) > 500
+order by totalvendido desc
+limit 1;
+
+-- c = categorias  p = productos  d = detalleventa
+
+select c.nombrecat as categoria, avg(p.precio) as preciopromedio, sum(d.cantidad) as vendidos
+from categorias c
+inner join productos p on c.idcat = p.idcat
+inner join detalleventa d on p.idprod = d.idprod
+group by c.nombrecat
+having avg(p.precio) > 1500 
+and sum(d.cantidad) >= 10;
+
+
+-- c = categorias  p = productos  d = detalleventa cat = categoría 
+
+select c.nombrecat as categoria, sum(d.cantidad * d.preciounit) as recaudacion
+from categorias c
+inner join productos p on c.idcat = p.idcat
+inner join detalleventa d on p.idprod = d.idprod
+where p.precio < 100
+group by c.nombrecat
+having sum(d.cantidad * d.preciounit) < 5000;
+
+
