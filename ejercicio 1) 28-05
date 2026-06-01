@@ -1,0 +1,94 @@
+1 )
+create database controlvuelos;
+use controlvuelos;
+
+create table aviones (
+    idavion int primary key auto_increment,
+    modelo varchar(50) not null,
+    capacidad int not null
+);
+
+create table pasajeros (
+    dnipasajero varchar(15) primary key,
+    nombre varchar(100) not null,
+    apellido varchar(100) not null
+);
+
+create table vuelos (
+    idvuelo int primary key auto_increment,
+    origen varchar(50) not null,
+    destino varchar(50) not null,
+    fechahora datetime not null,
+    idavion int not null,
+    foreign key (idavion) references aviones(idavion)
+);
+
+create table pasajerosvuelo (
+    idticket int primary key auto_increment,
+    idvuelo int not null,
+    dnipasajero varchar(15) not null,
+    precioticket decimal(10,2) not null,
+    foreign key (idvuelo) references vuelos(idvuelo),
+    foreign key (dnipasajero) references pasajeros(dnipasajero)
+);
+
+insert into aviones (modelo, capacidad) values
+('boeing 737', 180),
+('airbus a320', 150),
+('boeing 787', 300),
+('embraer 190', 100),
+('airbus a330', 280);
+
+insert into pasajeros (dnipasajero, nombre, apellido) values
+('30111222', 'juan', 'perez'),
+('30222333', 'ana', 'gomez'),
+('30333444', 'luis', 'lopez'),
+('30444555', 'maria', 'rodriguez'),
+('30555666', 'carlos', 'sanchez');
+
+insert into vuelos (origen, destino, fecha ,hora, idavion) values
+('ezeiza', 'madrid', 2025-09-10, “08:00:00”, 1),
+('ezeiza', 'miami', 2025-09-15,” 14:00:00”, 2),
+('cordoba', 'santiago', 2025-09-20 ,“10:00:00”, 3),
+('ezeiza', 'roma', 2025-09-25, “22:00:00”, 1),
+('mendoza', 'lima', 2025-09-28, “06:00:00”, 4);
+
+insert into pasajerosvuelo (idvuelo, dnipasajero, precioticket) values
+(1, '30111222', 600000),
+(1, '30222333', 600000),
+(1, '30333444', 600000),
+(2, '30444555', 550000),
+(2, '30555666', 550000),
+(3, '30111222', 400000),
+(4, '30222333', 700000),
+(5, '30333444', 450000);
+ 
+– a = avion
+v= vuelo
+pv= pasajerosvuelo
+select a.modelo,  sum(pv.precioticket) as totalrecaudado, count(pv.idticket) as totalpasajeros
+from aviones a
+join vuelos v on a.idavion = v.idavion
+join pasajerosvuelo pv on v.idvuelo = pv.idvuelo
+group by a.idavion, a.modelo
+having sum(pv.precioticket) > 2000000 
+   and count(pv.idticket) > 100;
+
+select 
+    v.idvuelo, 
+    v.destino,
+    avg(pv.precioticket) as promedioticket
+from vuelos v
+join pasajerosvuelo pv on v.idvuelo = pv.idvuelo
+where v.origen = 'ezeiza'
+group by v.idvuelo, v.destino
+having avg(pv.precioticket) > 500;
+
+select 
+    a.modelo, 
+    count(v.idvuelo) as cantidadvuelos
+from aviones a
+join vuelos v on a.idavion = v.idavion
+where v.fechahora >= date_sub(curdate(), interval 1 month)
+group by a.idavion, a.modelo
+having count(v.nrovuelo) > 50;
