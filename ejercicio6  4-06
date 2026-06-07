@@ -1,0 +1,82 @@
+
+create database restaurante;
+use restaurante;
+
+create table restaurantes(
+IDrestaurante int primary key auto_increment not null, 
+nombre varchar(100), 
+zona varchar(30)
+);
+
+create table platos(
+IDplato int primary key auto_increment not null,
+ nombre_plato varchar(20),
+ precio decimal(10),
+IDrestaurante int,
+foreign key (IDrestaurante) REFERENCES restaurantes(IDrestaurante)
+);
+
+create table pedidos(
+IDpedido int primary key auto_increment not null,
+IDplato int,
+foreign key (IDplato) REFERENCES platos(IDplato), 
+cantidad int (2)
+);
+insert into restaurantes values
+(1, 'pizzeria napoli', 'centro'),
+(2, 'pizza express', 'norte'),
+(3, 'sushi mar', 'puerto'),
+(4, 'parrilla don carlos', 'sur'),
+(5, 'empanadas la tucumana', 'centro');
+
+insert into platos values
+(1, 'pizza muzzarella', 1800.00, 1),
+(2, 'pizza napolitana', 2000.00, 1),
+(3, 'pizza fugazza', 1900.00, 2),
+(4, 'sushi combo 20', 2500.00, 3),
+(5, 'bife de chorizo', 3200.00, 4);
+
+insert into pedidos values
+(1, 1, 80),
+(2, 2, 70),
+(3, 3, 60),
+(4, 4, 40),
+(5, 5, 30);
+
+select nombre as restaurante, sum(cantidad) as pedidos_totales
+from restaurantes 
+--         tabla1  on tabla2.pkcolumna2          = tabla1.pkcolumna2 
+inner join platos  on restaurantes.IDrestaurante = platos.IDrestaurante
+--          tabla1 on tabla2.pkcolumna2 = tabla1.pkcolumna2
+inner join pedidos on platos.IDplato = pedidos.IDplato
+--        nombretabla (de la que quiero que agrupes).campodelatabla ( da a entender: los restaurantes que cumplan la condicion de los inner join, agrupa sus nombres. ) 
+group by restaurantes.nombre 
+--           nombretabla.IDPK ( da a entender: contame la cantidad de platos en total, que sean mayor a 5)
+having count(platos.IDplato) > 5 
+--      nombretabla.campo (da a entender: Y suma en base a la cantidad de pedidos, muestra los que superan los 200)
+and sum(pedidos.cantidad) > 200;
+
+select restaurantes.nombre as restaurante, avg(pedido.cantidad * platos.precio) as promedioingreso
+from restaurantes 
+--         tabla1  on tabla2.pkcolumna2          = tabla1.pkcolumna2 
+inner join platos on restaurante.IDrestaurante = platos.IDrestaurante
+--         tabla1  on tabla2.pkcolumna2          = tabla1.pkcolumna2
+inner join pedidos on platos.IDplato = pedidos.IDplato
+-- donde agrupando los inresos de los platos, sea mayor a 1500
+where platos.precio > 1500
+--        nombretabla (de la que quiero que agrupes).campodelatabla ( da a entender: los restaurantes que cumplan la condicion de los inner join, agrupa sus nombres. ) 
+group by restaurantes.nombre;
+-- Consulta 3: Top 10 platos de restaurantes que incluyan "Pizza" en su nombre
+--    tabla1.campodelatabla , tabla2.campodelatabla             //suma la cantidad de pedidos total          
+select platos.nombre_plato, restaurantes.nombre as restaurante, sum(pedidos.cantidad) as total_pedidos
+from restaurantes
+--         tabla1  on tabla2.pkcolumna2          = tabla1.pkcolumna2 
+inner join platos on restaurantes.IDrestaurante = platos.IDrestaurante
+--         tabla1  on tabla2.pkcolumna2          = tabla1.pkcolumna2 
+inner join pedidos on platos.IDplato = pedidos.IDplato
+--      tabla.campodelatabla
+where restaurantes.nombre = 'Pizza'
+--       agrupa el nombre de los platos y de los restaurantes que cumplan las condiciones anteriores.
+group by platos.nombre_plato, restaurantes.nombre
+order by total_pedidos desc
+limit 10;
