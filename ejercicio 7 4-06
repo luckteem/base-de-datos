@@ -1,0 +1,75 @@
+
+create database streaming_musica;
+use streaming_musica;
+
+create table artistas(
+    id_art int primary key auto_increment not null,
+    nombre varchar(100)
+);
+
+create table albumes(
+    id_alb int primary key auto_increment not null,
+    titulo varchar(100),
+    id_art int,
+    foreign key (id_art) references artistas(id_art)
+);
+
+create table reproducciones(
+    id_rep int primary key auto_increment not null,
+    id_alb int,
+    cant_repro int,
+    foreign key (id_alb) references albumes(id_alb)
+);
+
+insert into artistas values
+(1, 'Ariana Grande'),
+(2, 'The Weeknd'),
+(3, 'Coldplay'),
+(4, 'Dua Lipa'),
+(5, 'Imagine Dragons');
+
+insert into albumes values
+(1, 'Positions', 1),
+(2, 'After Hours', 2),
+(3, 'Music of the Spheres', 3),
+(4, 'Future Nostalgia', 4),
+(5, 'Evolve', 5);
+
+insert into reproducciones values
+(1, 1, 1200000),
+(2, 2, 950000),
+(3, 3, 500000),
+(4, 4, 2000000),
+(5, 5, 800000);
+
+select artistas.nombre as artista, sum(reproducciones.cant_repro) as total_reproducciones
+from artistas
+-- INNER JOIN: une las tablas por sus claves relacionadas (artista → álbum → reproducciones)
+inner join albumes on artistas.id_art = albumes.id_art
+--         tabla1  on tabla2.pkcolumna2          = tabla1.pkcolumna2 
+inner join reproducciones on albumes.id_alb = reproducciones.id_alb
+-- GROUP BY: agrupa los resultados por artista para aplicar funciones de agregación (SUM, COUNT)
+group by artistas.nombre
+-- HAVING: filtra los grupos creados por GROUP BY según condiciones agregadas
+having count(albumes.id_alb) > 3 
+and sum(reproducciones.cant_repro) > 1000000;
+
+select albumes.titulo as album,artistas.nombre as artista,avg(reproducciones.cant_repro) as promedio_reproducciones
+from albumes
+--         tabla1  on tabla2.pkcolumna2          = tabla1.pkcolumna2 
+inner join artistas on albumes.id_art = artistas.id_art
+--         tabla1  on tabla2.pkcolumna2          = tabla1.pkcolumna2 
+
+inner join reproducciones on albumes.id_alb = reproducciones.id_alb
+	--   tabla1.campo1   , tabla2.campo2
+group by albumes.titulo, artistas.nombre
+-- luego de filtrar los grupos, hace el promedio de las reproducciones y si supera los 50k te manda aca:
+having avg(reproducciones.cant_repro) > 50000;
+-- hace la lista de los que cumplen las anteriores condiciones en orden ascendiente.
+select artistas.nombre as artista,sum(reproducciones.cant_repro) as total_reproducciones
+from artistas
+inner join albumes on artistas.id_art = albumes.id_art
+inner join reproducciones on albumes.id_alb = reproducciones.id_alb
+group by artistas.nombre
+order by total_reproducciones asc
+limit 1;
