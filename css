@@ -1,0 +1,29 @@
+body{
+    background-color:#ffe4ec;
+    font-family:'Playfair Display', serif;
+    color:#5a2a3d;
+    }
+    .titulo{
+    color:#c2185b;
+    font-weight:600;
+    }
+    .burbuja{
+    background-color:#f8bbd0;
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 4px 10px rgba(194,24,91,0.2);
+    margin-bottom:25px;
+    }
+    .burbuja ul{
+    list-style-type:none;
+    padding-left:0;
+    }
+    .burbuja ul li{
+    margin-bottom:8px;
+    }
+    .burbuja ul li::before{
+    content:"• ";
+    color:#c2185b;
+    font-weight:600;
+    }
+    
