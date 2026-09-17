@@ -1,0 +1,101 @@
+
+
+body{
+    font-family: 'Lora', serif;
+    background-color: #fdf8f5;
+    margin: 0;
+    color: #333;
+}
+
+h1, h2, h3, h4{
+    font-family: 'Playfair Display', serif;
+}
+
+header{
+    background-color: #58111A;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+.badge{
+    background-color: white;
+    color: #58111A;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+main{
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+    padding: 15px;
+}
+
+h2{
+    color: #58111A;
+    border-bottom: 2px solid #58111A;
+    margin-top: 35px;
+}
+
+.card{
+    background: white;
+    border: 1px solid #ddd;
+    border-left: 5px solid #58111A;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.card.verde{
+    background-color: #e8f5e9;
+    border-left: 5px solid #2e7d32;
+}
+.card.verde h3{
+    color: #2e7d32;
+}
+
+.card-simple{
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.sql-box{
+    background: white;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.sqlboxoscuro code{
+    background: #f0f0f0;
+    display: block;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 15px;
+}
+#verde
+{
+    color:#2e7d32
+}
+
+.sql box{
+    background: #2b2b2b;
+    color: white;
+}
+.sql box code{
+    background: #444;
+    color: #81c784;
+}
+
+footer{
+    background: #58111A;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
