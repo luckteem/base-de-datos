@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL - Guía Esencial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <span class="logo">MySQL Guide</span>
+        <div class="menu">
+            <a href="#estructura">Estructura</a>
+            <a href="#normalizacion">Normalización</a>
+            <a href="#groupby">GROUP BY</a>
+            <a href="#catalogo">Catálogo SQL</a>
+        </div>
+    </div>
+</nav>
+
+<header class="portada">
+    <div class="container">
+        <h1>MySQL</h1>
+        <p>Guía clara y elegante: desde Normalización hasta JOINS</p>
+        <span class="badge">.</span>
+    </div>
+</header>
+
+<main class="container my-5">
+  <div class="row g-4">
+    
+    <div class="col-lg-8">
+
+        <section id="estructura" class="seccion">
+            <h2>1. Estructura Base</h2>
+            <div class="row g-3">
+                <div class="col-md-4"><div class="card-simple"><h4>TABLA</h4><p>Objeto que guarda datos. Ej: clientes</p></div></div>
+                <div class="col-md-4"><div class="card-simple"><h4>CAMPO</h4><p>Columna. Ej: nombre, email</p></div></div>
+                <div class="col-md-4"><div class="card-simple"><h4>REGISTRO</h4><p>Fila completa. Ej: (1, 'Ana')</p></div></div>
+            </div>
+        </section>
+
+        <section id="normalizacion" class="seccion">
+            <h2>2. Normalización</h2>
+            <div class="card"><h3>¿Qué es?</h3><p>Proceso para evitar redundancia. Cada dato se guarda una sola vez.</p></div>
+            <div class="row g-3 mt-1">
+                <div class="col-md-4"><div class="card"><h3>1FN</h3><p>Valores atómicos. No listas en un campo.</p><small>Mal: telefonos="11-1234, 11-5678"</small></div></div>
+                <div class="col-md-4"><div class="card"><h3>2FN</h3><p>Depende de TODA la clave compuesta.</p></div></div>
+                <div class="col-md-4"><div class="card"><h3>3FN</h3><p>Sin dependencia transitiva. Solo id_pais, no nombre_pais.</p></div></div>
+            </div>
+            <div class="card verde mt-3"><h3>Diccionario de Datos</h3><p>El plano de tu BD. Defines tipo de dato, claves y relaciones. Ej: id INT PRIMARY KEY.</p></div>
+        </section>
+
+        <section id="groupby" class="seccion">
+            <h2>3. GROUP BY y Agregación</h2>
+            <div class="sql-box"><h4>Funciones</h4><p>COUNT() cuenta, SUM() suma, AVG() promedia, MAX() y MIN() extremos.</p><code>SELECT COUNT(*) FROM clientes;</code></div>
+            <div class="sql-box"><h4>GROUP BY</h4><p>Agrupa por el mismo valor para contar por grupo.</p><code>SELECT pais, COUNT(*) FROM clientes GROUP BY pais;</code></div>
+            <div class="sql-box"><h4>HAVING vs WHERE</h4><p>WHERE filtra filas antes. HAVING filtra grupos después.</p><code>SELECT pais, COUNT(*) as total FROM clientes GROUP BY pais HAVING total > 5;</code></div>
+        </section>
+
+    </div>
+
+    <div class="col-lg-4">
+        <aside id="catalogo" class="sidebar">
+            <h2>4. Catálogo SQL</h2>
+            <div class="sql-box"><h4>SELECT y FROM</h4><code>SELECT nombre FROM clientes;</code></div>
+            <div class="sql-box"><h4>WHERE</h4><code>SELECT * FROM clientes WHERE pais='AR';</code></div>
+            <div class="sql-box"><h4>INSERT INTO</h4><code>INSERT INTO clientes (nombre) VALUES ('Juan');</code></div>
+            <div class="sql-box"><h4>LIKE y LIMIT</h4><code>SELECT * FROM clientes WHERE nombre LIKE 'A%' LIMIT 10;</code></div>
+            <div class="sql-box oscuro"><h4>JOINS</h4><p>INNER: solo coincidencias. LEFT: todo de la izq.</p><code>SELECT c.nombre, p.monto FROM clientes c INNER JOIN pedidos p ON c.id = p.cliente_id;</code></div>
+        </aside>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+    <p>MySQL Guia </p>
+</footer>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
