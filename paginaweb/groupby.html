@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>GROUP BY</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<nav class="navbar"><div class="container"><span class="logo">MySQL Guide</span><div class="menu"><a href="index.html">Inicio</a><a href="estructura.html">Estructura</a><a href="normalizacion.html">Normalización</a><a href="groupby.html">GROUP BY</a><a href="joins.html">JOINS</a><a href="catalogo.html">Catálogo</a></div></div></nav>
+<main class="container">
+<section class="seccion">
+<h2>3. GROUP BY</h2>
+<p>Para resumir datos.</p>
+<p>Funciones: COUNT(), SUM(), AVG(), MAX(), MIN()</p>
+<div class="sql-box"><p>Contar total</p><code>SELECT COUNT(*) FROM clientes;</code></div>
+<div class="sql-box"><p>Contar por país</p><code>SELECT pais, COUNT(*) FROM clientes GROUP BY pais;</code></div>
+<div class="sql-box"><p>WHERE filtra filas, HAVING filtra grupos</p><code>SELECT pais, COUNT(*) as total FROM clientes GROUP BY pais HAVING total > 5;</code></div>
+<div class="sql-box"><p>Top 5</p><code>SELECT pais, COUNT(*) as total FROM clientes GROUP BY pais ORDER BY total DESC LIMIT 5;</code></div>
+</section>
+</main>
+<footer>MySQL Guía</footer>
+</body>
+</html>

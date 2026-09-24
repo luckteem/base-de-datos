@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Catálogo</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<nav class="navbar"><div class="container"><span class="logo">MySQL Guide</span><div class="menu"><a href="index.html">Inicio</a><a href="estructura.html">Estructura</a><a href="normalizacion.html">Normalización</a><a href="groupby.html">GROUP BY</a><a href="joins.html">JOINS</a><a href="catalogo.html">Catálogo</a></div></div></nav>
+<main class="container">
+<section class="seccion">
+<h2>5. Catálogo SQL</h2>
+<div class="sql-box"><code>SELECT nombre FROM clientes;</code></div>
+<div class="sql-box"><code>SELECT * FROM clientes WHERE pais='AR';</code></div>
+<div class="sql-box"><code>INSERT INTO clientes (nombre) VALUES ('Juan');</code></div>
+<div class="sql-box"><code>UPDATE clientes SET nombre='Juan' WHERE id=1;</code></div>
+<div class="sql-box"><code>DELETE FROM clientes WHERE id=1;</code></div>
+<div class="sql-box"><code>SELECT * FROM clientes WHERE nombre LIKE 'A%' LIMIT 10;</code></div>
+</section>
+</main>
+<footer>MySQL Guía</footer>
+</body>
+</html>

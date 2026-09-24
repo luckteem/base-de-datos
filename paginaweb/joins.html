@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>JOINS</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<nav class="navbar"><div class="container"><span class="logo">MySQL Guide</span><div class="menu"><a href="index.html">Inicio</a><a href="estructura.html">Estructura</a><a href="normalizacion.html">Normalización</a><a href="groupby.html">GROUP BY</a><a href="joins.html">JOINS</a><a href="catalogo.html">Catálogo</a></div></div></nav>
+<main class="container">
+<section class="seccion">
+<h2>4. JOINS</h2>
+<p>Unen dos tablas por una columna en común.</p>
+<div class="sql-box"><p><b>INNER JOIN:</b> Solo coincidencias</p><code>SELECT c.nombre, p.monto FROM clientes c INNER JOIN pedidos p ON c.id = p.cliente_id;</code></div>
+<div class="sql-box"><p><b>LEFT JOIN:</b> Todos de la izq, aunque no tengan pedido</p><code>SELECT c.nombre, p.monto FROM clientes c LEFT JOIN pedidos p ON c.id = p.cliente_id;</code></div>
+<div class="sql-box"><p><b>RIGHT JOIN:</b> Todos de la der</p><code>SELECT c.nombre, p.monto FROM clientes c RIGHT JOIN pedidos p ON c.id = p.cliente_id;</code></div>
+<div class="sql-box"><p><b>CROSS JOIN:</b> Todo con todo</p><code>SELECT * FROM talles CROSS JOIN colores;</code></div>
+<p><b>Regla:</b> ON une, WHERE filtra.</p>
+</section>
+</main>
+<footer>MySQL Guía</footer>
+</body>
+</html>
